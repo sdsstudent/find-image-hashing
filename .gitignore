@@ -1,0 +1,31 @@
+# Data
+meme_images/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Profiling artifacts
+*.prof
+*.lprof
+.pytest_cache/
+
+# Generated figures (recreated by notebooks; not tracked)
+figures/

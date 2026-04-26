@@ -1,0 +1,42 @@
+{
+  "n_images": 100,
+  "mean_s": 0.44251039242837575,
+  "median_s": 0.417258157976903,
+  "p95_s": 0.7044312818907201,
+  "io_split": {
+    "mean_full": 0.4164081936934963,
+    "mean_compute": 0.4053161791486976,
+    "mean_io_plus_decode": 0.01109201454479869,
+    "io_fraction": 0.02663735899722266,
+    "n": 30
+  },
+  "scaling": [
+    {
+      "n": 50,
+      "total_s": 20.54615615995135,
+      "per_image_s": 0.410923123199027
+    },
+    {
+      "n": 100,
+      "total_s": 54.110041209030896,
+      "per_image_s": 0.541100412090309
+    },
+    {
+      "n": 200,
+      "total_s": 86.6719071570551,
+      "per_image_s": 0.43335953578527553
+    },
+    {
+      "n": 500,
+      "total_s": 190.84595436102245,
+      "per_image_s": 0.3816919087220449
+    }
+  ],
+  "figures": [
+    "fig1_time_breakdown.png",
+    "fig2_latency_distribution.png",
+    "fig3_io_split.png",
+    "fig4_extrapolation.png",
+    "fig5_scaling.png"
+  ]
+}

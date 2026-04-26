@@ -1,0 +1,6 @@
+Pillow
+imagehash
+numpy
+fastapi
+uvicorn
+memory-profiler
