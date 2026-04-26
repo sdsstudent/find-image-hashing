@@ -1,6 +1,14 @@
 Pillow
 imagehash
 numpy
+scipy
 fastapi
 uvicorn
 memory-profiler
+line-profiler
+matplotlib
+pandas
+tabulate
+pytest
+jupyter
+nbconvert

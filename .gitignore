@@ -25,7 +25,13 @@ venv/
 # Profiling artifacts
 *.prof
 *.lprof
+profiles/
 .pytest_cache/
 
 # Generated figures (recreated by notebooks; not tracked)
 figures/
+
+# Generated HTML reports (per-version + comparison; recreated)
+reports/
+
+# Note: summaries/ IS tracked — those are the report-data artefacts.
