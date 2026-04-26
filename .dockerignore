@@ -1,0 +1,41 @@
+# Without this file, `COPY . .` would balloon the image with the
+# meme_images dataset (~1 GB), notebooks, fixtures, and venv. See D11
+# in private_summative/text.txt for full rationale.
+
+# Version control + local virtualenvs
+.git/
+.gitignore
+.venv/
+venv/
+
+# Python build artefacts
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Jupyter / notebooks (not needed in production image)
+notebooks/
+.ipynb_checkpoints/
+
+# Test data — runtime API doesn't need fixtures
+tests/
+
+# Benchmark / dataset / reporting outputs
+meme_images/
+summaries/
+figures/
+reports/
+profiles/
+*.prof
+*.lprof
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+
+# Project meta-docs (kept in repo root, not needed in container)
+README.md
+private_summative/
