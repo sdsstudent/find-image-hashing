@@ -5,8 +5,6 @@ algorithm. The package ships three implementations (`reference`,
 `fixed`, `optimized`); use **`FINDHasherOptimized`** in production —
 the other two are kept for benchmarking and as the bug-fix audit trail.
 
-[![tests](https://img.shields.io/badge/tests-66%20passing-brightgreen)](#tests)
-[![mypy](https://img.shields.io/badge/mypy-clean-blue)](#type-safety)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
@@ -26,6 +24,7 @@ apart (~half the bits differ).
 - **Cross-platform interoperability** — share hash databases without sharing the images themselves.
 
 ---
+
 ## Try the demo
 
 A 5-minute walkthrough of the library, CLI, and API is in
@@ -34,7 +33,7 @@ to see hash computation step-by-step, near-duplicate detection on
 sample images, and how to call the FastAPI service from Python.
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[api,dev]"
 jupyter notebook notebooks/demo.ipynb
 ```
 
@@ -42,23 +41,19 @@ jupyter notebook notebooks/demo.ipynb
 
 ## Get in touch with FIN
 
-This library is maintained by **Find Images Now (FIN)** — a startup
+This library is maintained by **Find Images Now (FIN)**, a startup
 focused on perceptual hashing for content moderation, deduplication,
 and reverse image search at scale.
 
 - **Bug reports / feature requests**: open an issue in the repository
 - **Commercial / partnership enquiries**: reach out via FIN's
   established channels (anonymised in this submission)
-- **Contributions**: pull requests welcome — we run `pytest tests/` +
+- **Contributions**: pull requests welcome, we run `pytest tests/` +
   `mypy --ignore-missing-imports` before merging anything
-- **Security disclosures**: please report privately rather than via
-  public issue tracker, especially for adversarial-input findings
 
 ---
 
 ## Quickstart
-
-### Run via Docker
 
 ```bash
 docker build -t fin/find .
@@ -87,25 +82,13 @@ Distance < 75 bits → likely duplicate; > 110 bits → likely different.
 See `confidence` for an interpreted bucket and `threshold_recommendation`
 for cutoffs derived from ROC analysis on the meme_images dataset.
 
-### Run locally without Docker
-
-```bash
-pip install ".[api]"   # library + API runtime deps
-python -m api          # starts uvicorn on port 8945
-# or: uvicorn api.main:app --port 8945
-```
-
-For full development setup (tests, notebooks, profiling tools):
-
-```bash
-pip install -e ".[api,dev]"
-```
-
 ---
 
 ## Three usage modes
 
-The same `FINDHasherOptimized` code can be used three ways.
+Install with `pip install ".[api]"` (or `pip install -e ".[api,dev]"` for
+the full development setup with tests, notebooks, and profiling tools).
+The same `FINDHasherOptimized` code can then be used three ways.
 
 ### 1. Python library
 
@@ -139,8 +122,8 @@ find-hash --format hex image.jpg
 
 ```bash
 python -m api                              # start server (uvicorn on 8945)
-# Then POST to /compare as in the Quickstart above.
-# Interactive Swagger UI auto-rendered at: http://localhost:8945/docs
+# Or use the Dockerised service shown in Quickstart above.
+# POST to /compare; interactive Swagger UI at http://localhost:8945/docs
 ```
 
 ---
@@ -171,8 +154,6 @@ only need the contract can ignore them.
 | `threshold_recommendation` | `{high_precision, balanced, high_recall}` | Suggested distance cutoffs for different operating points |
 
 ---
-
-
 
 ## Privacy warning
 
