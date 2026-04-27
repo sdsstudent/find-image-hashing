@@ -27,6 +27,8 @@ venv/
 *.lprof
 profiles/
 .pytest_cache/
+.coverage
+htmlcov/
 
 # Generated figures (recreated by notebooks; not tracked)
 figures/

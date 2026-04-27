@@ -200,3 +200,14 @@ def test_docs_endpoint_renders(client):
     response = client.get("/docs")
     assert response.status_code == 200
     assert "swagger" in response.text.lower()
+
+
+def test_module_main_entry_point_imports():
+    """`python -m api` entry point imports cleanly and exposes `main()`.
+
+    Doesn't actually call `main()` (would block forever in `uvicorn.run`).
+    Verifies the entry point file isn't broken — catches rename / typo
+    regressions that would surface only at deploy time otherwise.
+    """
+    from api import __main__
+    assert callable(__main__.main)
