@@ -69,11 +69,11 @@ Response:
   "confidence": "high",
   "image1_meta": {"width": 250, "height": 250, "size_bytes": 13569},
   "image2_meta": {"width": 250, "height": 250, "size_bytes": 14466},
-  "threshold_recommendation": {"high_precision": 50, "balanced": 90, "high_recall": 130}
+  "threshold_recommendation": {"high_precision": 75, "balanced": 90, "high_recall": 110}
 }
 ```
 
-Distance < 50 bits → likely duplicate; > 130 bits → likely different.
+Distance < 75 bits → likely duplicate; > 110 bits → likely different.
 See `confidence` for an interpreted bucket and `threshold_recommendation`
 for cutoffs derived from ROC analysis on the meme_images dataset.
 
@@ -168,7 +168,7 @@ only need the contract can ignore them.
 | `image1_hash` | str (64-char hex) | Required — FINd hash of `image1` |
 | `image2_hash` | str (64-char hex) | Required — FINd hash of `image2` |
 | `distance` | int (0–256) | Required — Hamming distance between the two hashes |
-| `confidence` | "high" / "medium" / "low" | Bucketed from `distance`: `<50` high, `50-90` medium, `≥90` low. Cutoffs derived from ROC operating points on meme_images (FPR ≈ 0.1% at 50, ≈ 1% at 90). |
+| `confidence` | "high" / "medium" / "low" | Bucketed from `distance`: `<75` high, `75-110` medium, `≥110` low. Cutoffs calibrated from measured ROC on meme_images (75 ≈ FPR 0.1% / TPR 96%; 110 ≈ FPR 5% / TPR 98%). |
 | `image1_meta`, `image2_meta` | `{width, height, size_bytes}` | Per-image metadata for downstream filtering / indexing |
 | `threshold_recommendation` | `{high_precision, balanced, high_recall}` | Suggested distance cutoffs for different operating points |
 

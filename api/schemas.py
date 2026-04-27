@@ -58,20 +58,21 @@ class CompareResponse(BaseModel):
     confidence: str = Field(
         ...,
         description="Bucketed confidence label derived from distance via "
-                    "ROC-anchored thresholds: <50 high, 50-90 medium, >=90 low",
+                    "ROC-calibrated thresholds: <75 high, 75-110 medium, >=110 low",
     )
     image1_meta: ImageMeta
     image2_meta: ImageMeta
     threshold_recommendation: dict[str, int] = Field(
         default_factory=lambda: {
-            "high_precision": 50,
+            "high_precision": 75,
             "balanced": 90,
-            "high_recall": 130,
+            "high_recall": 110,
         },
         description="Suggested distance cutoffs for different operating "
-                    "points (high precision: FPR≈0.1%, balanced: FPR≈1%, "
-                    "high recall: FPR≈5%). Calibrated on meme_images; "
-                    "clients should re-validate for other domains.",
+                    "points (high precision: FPR≈0.1% / TPR≈96%, balanced: "
+                    "FPR≈0% / TPR≈94%, high recall: FPR≈5% / TPR≈98%). "
+                    "Calibrated on meme_images; clients should re-validate "
+                    "for other domains.",
     )
 
 

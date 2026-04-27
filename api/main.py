@@ -44,17 +44,26 @@ from api.schemas import (
 # Override at runtime via env: docker run -e MAX_UPLOAD_BYTES=20000000 ...
 MAX_UPLOAD_BYTES = int(os.environ.get("MAX_UPLOAD_BYTES", 10 * 1024 * 1024))
 
-# Confidence bucket thresholds — see D10. Anchored to ROC operating points
-# measured on meme_images (FPR ≈ 0.1% at 50 bits, FPR ≈ 1% at 90 bits).
-HIGH_CONFIDENCE_BELOW = 50
-MEDIUM_CONFIDENCE_BELOW = 90
+# Confidence bucket thresholds — see D10. Calibrated against measured ROC
+# on meme_images: thresholds chosen so each bucket maps to a useful
+# operating point on FINd's distance distribution.
+#
+# At threshold 75: FPR ≈ 0.1%, TPR ≈ 96%.
+# At threshold 90: FPR ≈ 0%,   TPR ≈ 94%.
+# At threshold 110: FPR ≈ 5%,  TPR ≈ 98%.
+#
+# (An earlier draft used 50/90/130, but 50 caught only 48% of true
+# duplicates and 130 produced 67% false-positive rate — neither was a
+# useful default. See text.txt section D10 for the calibration update.)
+HIGH_CONFIDENCE_BELOW = 75
+MEDIUM_CONFIDENCE_BELOW = 110
 
 # Threshold recommendations surfaced in /compare response so clients can
 # choose their own operating point per A1/A2/A5 use cases.
 THRESHOLD_RECOMMENDATION = {
-    "high_precision": 50,   # FPR ≈ 0.1% — auto-action safe
-    "balanced": 90,         # FPR ≈ 1%   — recommend human review (use case A)
-    "high_recall": 130,     # FPR ≈ 5%   — high-recall scenarios
+    "high_precision": 75,   # FPR ≈ 0.1%, TPR ≈ 96% — strict, low false alarm
+    "balanced": 90,         # FPR ≈ 0%,   TPR ≈ 94% — recommended for moderation (use case A)
+    "high_recall": 110,     # FPR ≈ 5%,   TPR ≈ 98% — broader detection with light review
 }
 
 
