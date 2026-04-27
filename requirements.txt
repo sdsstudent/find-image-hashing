@@ -1,16 +1,33 @@
-Pillow
-imagehash
-numpy
-scipy
-fastapi
-uvicorn[standard]
-python-multipart
-httpx
-memory-profiler
-line-profiler
-matplotlib
-pandas
-tabulate
-pytest
-jupyter
-nbconvert
+# Pinned dependencies for full development setup (notebooks + tests + API).
+#
+# Modern installs should prefer pyproject.toml:
+#     pip install -e ".[api,dev]"
+#
+# This file mirrors that set with `==` pins for grading reproducibility,
+# and remains usable for `pip install -r requirements.txt` too.
+#
+# See pyproject.toml for the canonical source. Updated 2026-04-27.
+
+# === Library runtime ===
+numpy==2.4.4
+Pillow==12.2.0
+ImageHash==4.3.2
+
+# === API runtime ===
+fastapi==0.136.1
+uvicorn[standard]==0.46.0
+python-multipart==0.0.26
+httpx==0.28.1
+
+# === Development / notebooks / benchmarks ===
+pytest==9.0.3
+pytest-cov==7.1.0
+mypy==1.20.2
+memory-profiler==0.61.0
+line_profiler==5.0.2
+matplotlib==3.10.8
+pandas==3.0.2
+tabulate==0.10.0
+scipy==1.17.1
+jupyter==1.1.1
+nbconvert==7.17.1

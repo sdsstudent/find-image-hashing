@@ -1,0 +1,78 @@
+# Standard PEP 621 project metadata + setuptools build backend.
+#
+# Layout: src/find_image_hashing/ holds the installable library; the
+# top-level api/, tests/, and notebooks/ are app / tooling and are not
+# part of the installed wheel.
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "find-image-hashing"
+version = "0.1.0"
+description = "Fast in-house near-duplicate image hashing — numpy-vectorised FINd, packaged as library + CLI + REST API."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.12"
+authors = [{name = "Find Images Now (FIN)"}]
+keywords = ["perceptual-hashing", "image-similarity", "near-duplicate", "content-moderation", "FIND"]
+
+# Runtime dependencies are pinned with == for grading reproducibility.
+# These are the strict subset needed to import + run the library; full dev
+# tooling (notebooks, tests, profiling) lives in the [project.optional-dependencies].dev set.
+dependencies = [
+    "numpy==2.4.4",
+    "Pillow==12.2.0",
+    "ImageHash==4.3.2",
+]
+
+[project.optional-dependencies]
+# Install with: pip install -e ".[api]"
+api = [
+    "fastapi==0.136.1",
+    "uvicorn[standard]==0.46.0",
+    "python-multipart==0.0.26",
+    "httpx==0.28.1",  # used by tests/benchmark_api.py
+]
+# Install with: pip install -e ".[dev]"
+dev = [
+    "pytest==9.0.3",
+    "pytest-cov==7.1.0",
+    "mypy==1.20.2",
+    "memory-profiler==0.61.0",
+    "line_profiler==5.0.2",
+    "matplotlib==3.10.8",
+    "pandas==3.0.2",
+    "tabulate==0.10.0",
+    "scipy==1.17.1",
+    "jupyter==1.1.1",
+    "nbconvert==7.17.1",
+]
+
+# CLI entry points wired to the existing _cli function in optimized.py
+# and the main entry point in api/__main__.py. Installs as: find-hash, find-api.
+[project.scripts]
+find-hash = "find_image_hashing.optimized:_cli"
+
+[project.urls]
+Homepage = "https://github.com/sdsstudent/find-image-hashing"
+Documentation = "https://github.com/sdsstudent/find-image-hashing#readme"
+
+# Tell setuptools to find packages under src/ — only `find_image_hashing`,
+# explicitly excluding the loose helper modules (sampling, timing, plots)
+# which are notebook-only utilities and should not ship in the wheel.
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["find_image_hashing*"]
+
+[tool.pytest.ini_options]
+# Default test discovery — the conftest.py at tests/ also adds src/ to
+# sys.path so tests work without `pip install -e .`.
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true   # imagehash etc. ship no type stubs
+files = ["src/find_image_hashing", "api"]

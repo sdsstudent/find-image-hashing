@@ -17,8 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from FINd_fixed import FINDHasherFixed
-from FINd_optimized import FINDHasherOptimized
+from find_image_hashing import FINDHasherFixed, FINDHasherOptimized
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 KNOWN_FIXED = json.loads((FIXTURES_DIR / "known_hashes_fixed.json").read_text())

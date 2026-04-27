@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-from FINd import FINDHasher
+from find_image_hashing import FINDHasher
 
 MEME_DIR = Path(__file__).resolve().parent.parent / "meme_images"
 SAMPLE_SIZE = 200

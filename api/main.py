@@ -23,15 +23,11 @@ from __future__ import annotations
 
 import io
 import os
-import sys
-from pathlib import Path
 
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from PIL import Image
 
-# Make sibling FINd_optimized.py importable when the API runs from project root.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from FINd_optimized import FINDHasherOptimized
+from find_image_hashing import FINDHasherOptimized
 
 from api.schemas import (
     CompareResponse,

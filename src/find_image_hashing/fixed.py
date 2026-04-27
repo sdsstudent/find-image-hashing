@@ -4,7 +4,7 @@ import math
 
 from PIL import Image
 
-from matrix import MatrixUtil #Ensure that matrix.py is in the same directory as this file!
+from .matrix import MatrixUtil  # sibling module in the same package
 from imagehash import ImageHash
 import numpy as np
 

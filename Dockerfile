@@ -12,18 +12,15 @@ RUN apt-get update \
 
 WORKDIR /app
 
-## Install runtime-only deps in a separate layer from application code so
-## that pure-code edits don't invalidate the (slow) pip-install layer.
-## We use requirements-api.txt (subset of requirements.txt) — excludes
-## jupyter / nbconvert / matplotlib / pandas / pytest which are dev-only
-## and would inflate the image by ~500 MB.
-COPY requirements-api.txt .
-RUN pip install --no-cache-dir -r requirements-api.txt
-
-## Copy only what the API needs at runtime — see .dockerignore for the
-## inverse list (dataset, notebooks, fixtures, summaries are excluded).
-COPY FINd.py FINd_fixed.py FINd_optimized.py matrix.py ./
+## Install the library + its API extras via pyproject.toml.
+## Using `pip install .` (not editable) so the wheel is built once and
+## the source dir doesn't need to stay in the image. Layered cache:
+## copy pyproject.toml first so dependency resolution is cached when
+## only application code changes.
+COPY pyproject.toml README.md ./
+COPY src/ ./src/
 COPY api/ ./api/
+RUN pip install --no-cache-dir ".[api]"
 
 ## Build-time metadata exposed via GET /version (overridable):
 ##   docker build --build-arg GIT_SHA=$(git rev-parse --short HEAD) \

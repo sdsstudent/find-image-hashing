@@ -26,7 +26,8 @@ import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
-from FINd import FINDHasher
+sys.path.insert(0, str(ROOT / "src"))
+from find_image_hashing import FINDHasher
 from src.plots import (
     plot_extrapolation,
     plot_io_split,
