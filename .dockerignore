@@ -36,6 +36,8 @@ profiles/
 .idea/
 .DS_Store
 
-# Project meta-docs (kept in repo root, not needed in container)
-README.md
+# Private working notes (intentionally not shipped publicly)
 private_summative/
+
+# README.md is intentionally NOT excluded — pip needs it during
+# `pip install` because pyproject.toml declares `readme = "README.md"`.
