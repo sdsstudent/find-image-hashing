@@ -1,0 +1,64 @@
+{
+  "seed": 99,
+  "n_images": 30,
+  "attacks": [
+    "noise_sigma_5",
+    "jpeg_q10",
+    "rotate_3deg",
+    "crop_5pct",
+    "brightness_+20pct"
+  ],
+  "mean_distance": {
+    "find": {
+      "brightness_+20pct": 8.8,
+      "crop_5pct": 81.7,
+      "jpeg_q10": 6.9,
+      "noise_sigma_5": 1.5,
+      "rotate_3deg": 53.5
+    },
+    "phash": {
+      "brightness_+20pct": 9.5,
+      "crop_5pct": 75.7,
+      "jpeg_q10": 5.5,
+      "noise_sigma_5": 1.0,
+      "rotate_3deg": 47.6
+    },
+    "whash": {
+      "brightness_+20pct": 9.8,
+      "crop_5pct": 41.3,
+      "jpeg_q10": 4.8,
+      "noise_sigma_5": 2.6,
+      "rotate_3deg": 28.8
+    }
+  },
+  "std_distance": {
+    "find": {
+      "brightness_+20pct": 3.9,
+      "crop_5pct": 13.3,
+      "jpeg_q10": 3.8,
+      "noise_sigma_5": 1.4,
+      "rotate_3deg": 9.7
+    },
+    "phash": {
+      "brightness_+20pct": 4.2,
+      "crop_5pct": 12.5,
+      "jpeg_q10": 3.9,
+      "noise_sigma_5": 1.1,
+      "rotate_3deg": 8.0
+    },
+    "whash": {
+      "brightness_+20pct": 8.3,
+      "crop_5pct": 18.0,
+      "jpeg_q10": 9.0,
+      "noise_sigma_5": 7.3,
+      "rotate_3deg": 14.5
+    }
+  },
+  "per_attack_winner": {
+    "noise_sigma_5": "phash",
+    "jpeg_q10": "whash",
+    "rotate_3deg": "whash",
+    "crop_5pct": "whash",
+    "brightness_+20pct": "find"
+  }
+}

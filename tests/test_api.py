@@ -202,6 +202,49 @@ def test_docs_endpoint_renders(client):
     assert "swagger" in response.text.lower()
 
 
+def test_compare_low_variance_image_emits_warning(client, real_image_bytes):
+    """Uploading a uniform / single-colour image populates the `warnings`
+    field. Hash is still returned (no error), but the warning tells the
+    client the result is not meaningful for similarity comparison."""
+    # Synthetic 100x100 mid-grey image — luma std should be ~0
+    uniform_img = Image.new("RGB", (100, 100), (128, 128, 128))
+    buf = io.BytesIO()
+    uniform_img.save(buf, format="JPEG")
+    uniform_bytes = buf.getvalue()
+
+    response = client.post(
+        "/compare",
+        files={
+            "image1": ("uniform.jpg", uniform_bytes, "image/jpeg"),
+            "image2": ("real.jpg", real_image_bytes, "image/jpeg"),
+        },
+    )
+    assert response.status_code == 200
+    data = response.json()
+
+    # Hash returned normally
+    assert len(data["image1_hash"]) == 64
+    assert len(data["image2_hash"]) == 64
+
+    # Warning specifically about image1 (the uniform one)
+    assert any("image1" in w and "near-uniform" in w for w in data["warnings"])
+    # Real image should not trigger a warning
+    assert not any("image2" in w for w in data["warnings"])
+
+
+def test_compare_normal_image_no_warning(client, real_image_bytes):
+    """A normal image with reasonable variance produces an empty warnings list."""
+    response = client.post(
+        "/compare",
+        files={
+            "image1": ("a.jpg", real_image_bytes, "image/jpeg"),
+            "image2": ("b.jpg", real_image_bytes, "image/jpeg"),
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["warnings"] == []
+
+
 def test_module_main_entry_point_imports():
     """`python -m api` entry point imports cleanly and exposes `main()`.
 

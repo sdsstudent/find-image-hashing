@@ -1,8 +1,7 @@
 # FINd — Fast In-house Near-Duplicate image hashing
 
-A 60× faster, bit-exact reimplementation of the FINd perceptual image
-hashing algorithm, packaged as a Python library, CLI tool, and
-production-ready FastAPI service with Docker container.
+A bit-exact reimplementation of the FINd perceptual image
+hashing algorithm, packaged as a Python library, CLI tool and FastAPI service with Docker container.
 
 [![tests](https://img.shields.io/badge/tests-65%20passing-brightgreen)](#tests)
 [![mypy](https://img.shields.io/badge/mypy-clean-blue)](#type-safety)
@@ -17,12 +16,6 @@ similar images get hashes that are close in Hamming distance (a small
 number of bits differ); two unrelated images get hashes that are far
 apart (~half the bits differ).
 
-Unlike a cryptographic hash (SHA-256, MD5) that completely changes
-when even one byte of the file changes, a perceptual hash captures the
-**visual content** of the image. Resize, re-encode, add a watermark,
-adjust brightness — the hash stays close. Replace the image entirely —
-the hash changes a lot.
-
 This repository is the consultant's deliverable for the OII SDS in
 Practice 2026 summative assignment: benchmark the rough research
 implementation, optimise the bottleneck, compare against the leading
@@ -34,21 +27,16 @@ library + REST API.
 | use case | how FIN customers might apply it |
 |---|---|
 | **Near-duplicate detection** | Find duplicate uploads in user galleries, catch re-shared memes across platforms, flag visually identical content before storing it twice |
-| **Content moderation** | Block re-uploads of previously banned content (CSAM via PhotoDNA-style hash sharing, terrorist imagery via GIFCT, copyright violations) without storing the original media |
+| **Content moderation** | Block re-uploads of previously banned content without storing the original media |
 | **Reverse image search** | Find visually similar images in a database without resorting to expensive CNN embeddings or third-party APIs |
-| **Deduplication for storage** | Identify near-identical images in a large archive before consolidating storage; estimate dataset size honestly when many items are slight variations |
-| **Misinformation tracking** | Track how the same manipulated image spreads across a network (each upload gets re-hashed, identical / near-identical hashes cluster the propagation graph) |
 | **Cross-platform interoperability** | Share hash databases between platforms without sharing the actual images (privacy-preserving cooperation) |
 
-The 256-bit output makes FINd suitable for large-scale databases —
-collisions are statistically negligible up to billions of items, vs
-the 64-bit default of most off-the-shelf alternatives.
 
 ---
 
 ## Quickstart
 
-### Run via Docker (no install)
+### Run via Docker 
 
 ```bash
 docker build -t fin/find .

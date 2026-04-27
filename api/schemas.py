@@ -74,6 +74,15 @@ class CompareResponse(BaseModel):
                     "Calibrated on meme_images; clients should re-validate "
                     "for other domains.",
     )
+    warnings: list[str] = Field(
+        default_factory=list,
+        description="Optional non-fatal warnings about the request. Currently "
+                    "populated when an input image has near-zero luma variance "
+                    "(uniform / single-colour image), in which case the hash "
+                    "is determined by floating-point noise rather than visual "
+                    "content and should not be relied on for similarity "
+                    "judgements. Empty list = no warnings.",
+    )
 
 
 class HealthResponse(BaseModel):

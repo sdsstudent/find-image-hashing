@@ -66,6 +66,13 @@ THRESHOLD_RECOMMENDATION = {
     "high_recall": 110,     # FPR ≈ 5%,   TPR ≈ 98% — broader detection with light review
 }
 
+# Below this luma standard deviation, the image is essentially uniform
+# (single colour / blank). Perceptual hashes on such inputs are determined
+# by floating-point roundoff noise rather than visual content — see D8 in
+# text.txt. We don't reject these requests, but we surface a warning in
+# the response so the client knows the hash isn't meaningful for similarity.
+LOW_VARIANCE_THRESHOLD = 1.0
+
 
 app = FastAPI(
     title="FINd image hashing API",
@@ -160,6 +167,18 @@ def bucket_confidence(distance: int) -> str:
     return "low"
 
 
+def is_low_variance(img: Image.Image) -> bool:
+    """Return True if the image is essentially uniform (single colour).
+
+    Computes the standard deviation of the grayscale luma channel and
+    compares against LOW_VARIANCE_THRESHOLD. Cheap (~0.1 ms for a
+    typical 250x250 image), so safe to call on every request.
+    """
+    import numpy as np
+    luma = np.asarray(img.convert("L"), dtype=np.float32)
+    return bool(luma.std() < LOW_VARIANCE_THRESHOLD)
+
+
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
@@ -185,6 +204,21 @@ async def compare(
     h2 = hasher.fromImage(img2)
     distance = h1 - h2
 
+    # Surface non-fatal warnings about input quality. Currently only one
+    # warning class — uniform / low-variance images, where the hash is
+    # noise-dominated rather than visual-content-dominated.
+    warnings: list[str] = []
+    if is_low_variance(img1):
+        warnings.append(
+            "image1 is near-uniform (low luma variance): perceptual hash is "
+            "noise-dominated and may not be meaningful for similarity comparison"
+        )
+    if is_low_variance(img2):
+        warnings.append(
+            "image2 is near-uniform (low luma variance): perceptual hash is "
+            "noise-dominated and may not be meaningful for similarity comparison"
+        )
+
     return CompareResponse(
         image1_hash=str(h1),
         image2_hash=str(h2),
@@ -201,6 +235,7 @@ async def compare(
             size_bytes=len(content2),
         ),
         threshold_recommendation=THRESHOLD_RECOMMENDATION,
+        warnings=warnings,
     )
 
 
