@@ -20,10 +20,39 @@ apart (~half the bits differ).
 
 ### Use cases
 
-- **Near-duplicate detection** — find duplicate uploads in user galleries, catch re-shared memes across platforms, flag visually identical content before storing it twice.
-- **Content moderation** — block re-uploads of previously banned content without storing the original media.
-- **Reverse image search** — find visually similar images in a database without resorting to expensive CNN embeddings or third-party APIs.
-- **Cross-platform interoperability** — share hash databases between platforms without sharing the actual images (privacy-preserving cooperation).
+- **Near-duplicate detection** — catch re-shared content across platforms or galleries.
+- **Content moderation** — block known-bad re-uploads without storing the original media.
+- **Reverse image search** — find similar images without CNN embeddings or third-party APIs.
+- **Cross-platform interoperability** — share hash databases without sharing the images themselves.
+
+---
+## Try the demo
+
+A 5-minute walkthrough of the library, CLI, and API is in
+[`notebooks/demo.ipynb`](notebooks/demo.ipynb). Open it in Jupyter
+to see hash computation step-by-step, near-duplicate detection on
+sample images, and how to call the FastAPI service from Python.
+
+```bash
+pip install -e ".[dev]"
+jupyter notebook notebooks/demo.ipynb
+```
+
+---
+
+## Get in touch with FIN
+
+This library is maintained by **Find Images Now (FIN)** — a startup
+focused on perceptual hashing for content moderation, deduplication,
+and reverse image search at scale.
+
+- **Bug reports / feature requests**: open an issue in the repository
+- **Commercial / partnership enquiries**: reach out via FIN's
+  established channels (anonymised in this submission)
+- **Contributions**: pull requests welcome — we run `pytest tests/` +
+  `mypy --ignore-missing-imports` before merging anything
+- **Security disclosures**: please report privately rather than via
+  public issue tracker, especially for adversarial-input findings
 
 ---
 
@@ -143,35 +172,7 @@ only need the contract can ignore them.
 
 ---
 
-## Try the demo
 
-A 5-minute walkthrough of the library, CLI, and API is in
-[`notebooks/demo.ipynb`](notebooks/demo.ipynb). Open it in Jupyter
-to see hash computation step-by-step, near-duplicate detection on
-sample images, and how to call the FastAPI service from Python.
-
-```bash
-pip install -e ".[dev]"
-jupyter notebook notebooks/demo.ipynb
-```
-
----
-
-## Get in touch with FIN
-
-This library is maintained by **Find Images Now (FIN)** — a startup
-focused on perceptual hashing for content moderation, deduplication,
-and reverse image search at scale.
-
-- **Bug reports / feature requests**: open an issue in the repository
-- **Commercial / partnership enquiries**: reach out via FIN's
-  established channels (anonymised in this submission)
-- **Contributions**: pull requests welcome — we run `pytest tests/` +
-  `mypy --ignore-missing-imports` before merging anything
-- **Security disclosures**: please report privately rather than via
-  public issue tracker, especially for adversarial-input findings
-
----
 
 ## Privacy warning
 
